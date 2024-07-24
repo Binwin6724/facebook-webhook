@@ -4,7 +4,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
-const VERIFY_TOKEN = 'YOUR_VERIFY_TOKEN';
+const VERIFY_TOKEN = 'my_secure_verify_token_12345';
 
 app.get('/webhook', (req, res) => {
   let mode = req.query['hub.mode'];
