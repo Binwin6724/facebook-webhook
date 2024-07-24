@@ -23,6 +23,8 @@ app.get('/webhook', (req, res) => {
 app.post('/webhook', (req, res) => {
   let body = req.body;
 
+  console.log('Webhook received:', JSON.stringify(body, null, 2)); // Log the entire body for inspection
+
   if (body.object === 'page') {
     body.entry.forEach(function(entry) {
       let pageID = entry.id;
@@ -32,6 +34,8 @@ app.post('/webhook', (req, res) => {
         if (change.field === 'feed') {
           console.log('New post added:', change.value);
           // Process the new post
+        } else {
+          console.log('Other change detected:', change); // Log non-feed changes for debugging
         }
       });
     });
