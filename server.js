@@ -1,13 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const axios = require('axios');
 const app = express();
 
 app.use(bodyParser.json());
 
-// Your verify token and page access token
-const VERIFY_TOKEN = 'thISisasampleVerifyToken';
-const PAGE_ACCESS_TOKEN = 'EAAPgjUpPcZA0BO8et1MHuiaDKwZBOlZCrS2qAODKWkbUzvZCXcpAbLTWuABSLMeElkFPQ4KdzhBVZBx9iuEDy3nhSg9nXVuREZCZC0ZBZBrHqizBoQJSWohjun3h8a1ZC5mjZAZCaTlVQA0R4fHZBxHxfFURy4mrxGbiDfG2ufLZADw6W28sSmhnXaJxWuUFqSJx4cnYfOqA5PnLgZD';
+const VERIFY_TOKEN = 'my_secure_verify_token_12345';
 
 // Verification endpoint
 app.get('/webhook', (req, res) => {
@@ -27,26 +24,14 @@ app.post('/webhook', (req, res) => {
   let body = req.body;
 
   if (body.object === 'page') {
-    body.entry.forEach(async function(entry) {
+    body.entry.forEach(function(entry) {
       let pageID = entry.id;
       let timeOfEvent = entry.time;
 
-      entry.changes.forEach(async function(change) {
-        if (change.field === 'feed' && change.value.item === 'post') {
-          let postID = change.value.post_id;
-          console.log('New post added:', postID);
-
-          // Fetch likes for the new post
-          try {
-            let response = await axios.get(`https://graph.facebook.com/v12.0/${postID}/likes`, {
-              params: {
-                access_token: PAGE_ACCESS_TOKEN
-              }
-            });
-            console.log('Likes information:', response.data);
-          } catch (error) {
-            console.error('Error fetching likes:', error.response ? error.response.data : error.message);
-          }
+      entry.changes.forEach(function(change) {
+        if (change.field === 'feed') {
+          console.log('New post added:', change.value);
+          // Process the new post
         }
       });
     });
